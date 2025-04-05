@@ -6,7 +6,7 @@
 # Appearance
 appearance:
   mode: light
-  color: indigo
+  color: red
 
 # SEO
 marketing:
@@ -34,20 +34,20 @@ header:
     align: "center"
     fixed_to_top: true
     logo:
-      text: ""
+      text: "UWASIC"
       # Logo filename in `assets/media/` folder
       filename: "logo.svg"
     button:
       enable: true
-      text: "Get Started"
-      url: "https://hugoblox.com/templates/"
+      text: "Join Us"
+      url: "#join-us"
     show_search: true
     show_theme_chooser: true
 
 # Site footer
 footer:
   copyright:
-    notice: '© {year} My Company'
+    notice: '© {year} UWASIC'
 
 # Localization
 locale:
