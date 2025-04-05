@@ -5,7 +5,7 @@
 
 # Appearance
 appearance:
-  mode: light
+  mode: system
   color: red
 
 # SEO
@@ -34,7 +34,7 @@ header:
     align: "center"
     fixed_to_top: true
     logo:
-      text: "UWASIC"
+      text:
       # Logo filename in `assets/media/` folder
       filename: "logo.svg"
     button:
