@@ -1,4 +1,10 @@
 .navbar-brand svg {
     height:3em;
-    max-width:100%
+    max-width:100%;
+  }
+
+.justify-content-center{
+    justify-content: center;
+    display: flex;
+    align-items: center;
   }
