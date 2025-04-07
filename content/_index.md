@@ -51,10 +51,138 @@ sections:
         - name: Grow Your Network
           icon: user-group
           description: Connect with industry mentors, alumni, and peers passionate about hardware
-          
-          icon: user-group
-          description: Connect with industry mentors, alumni, and peers passionate about hardware
-          
+  - block: markdown
+    content:
+      text: | 
+        <div id="demo">
+          <canvas id="c"></canvas>
+          <div id="controls">
+            <div id="phase">phase</div>
+            <div id="breakpoints_div">
+            <input type="checkbox" id="breakpoints" name="breakpoints" checked />
+            <label for="breakpoints">slowdown at rows 0,1,4</label>
+          </div>
+          <div>
+            Speed: <div id="speed_display"></div>
+            <input id="speed" type="range" min="-5" max="18" value="0">
+          </div>
+          <div>
+            Show: 
+            <select id="show_select">
+              <option value="circuit+screen">circuit+screen</option>
+              <option value="screen">screen</option>
+              <option value="circuit">circuit</option>
+            </select>
+           </div>
+           <div>
+             Circuit: 
+                    <select id="circuit_select" style="width: 150px;">
+                        <option value="09_tt_um_znah_vga_ca">VGA CA (znah)</option>
+                        <option value="08_tt_um_a1k0n_nyancat">Nyan Cat (a1k0n)</option>
+                        <option value="09_tt_um_rejunity_vga_test01">Drop (ReJ et al.)</option>
+                        <option value="08_tt_um_top">Flame (K. Beckmann & L. Mårtensson)</option>
+                        <option value="09_tt_um_vga_clock">VGA Clock (Matt Venn)</option>
+                        <option value="09_tt_um_2048_vga_game">2048 Game (Uri Shaked)</option>
+                        <option value="10_tt_um_uwasic_dinogame">Dino Game (UWASIC)</option>
+                    </select>
+                    <span id="circuit_info"></span>
+                </div>        
+            </div>
+        </div>
+
+        <script src="/swissgl.js"></script>
+        <script src="/sim.js"></script>
+
+        <script>
+            "use strict";
+            const $ = q=>document.querySelector(q);
+            const canvas = $('#c');
+            const glsl = SwissGL(canvas);
+
+            const ca_project = '09_tt_um_znah_vga_ca';
+            let sim;
+            let skip_n = 0;
+            let needBreak = false;
+            let project;
+            async function init() {
+                sim = await VGASimulator.init(glsl);
+                await load_circuit();
+                glsl.loop(frame);
+            }
+
+            async function load_circuit() {
+                project = $('#circuit_select').value;
+                $('#circuit_info').innerText = 'loading...';
+                $('#phase').innerText = project==ca_project ? 'row 0: init' : '';
+                $('#breakpoints_div').style.display = project==ca_project ? 'block' : 'none';
+                const url = `gds/${project}.json`; 
+                const response = await fetch(url);
+                const data = await response.json();
+                sim.load_circuit(data);
+                const [tt, ...rest] = project.split('_');
+                const name = rest.join('_');
+                $('#circuit_info').innerHTML = `<a href="https://tinytapeout.com/runs/tt${tt}/${name}">project info</a>`;
+            }
+            $('#circuit_select').onchange = load_circuit;
+
+            function updateStatus(line) {
+                if (project != ca_project)
+                    return;
+                let status = 'copy the previous row';
+                if (line < 0 || line >= H) {
+                    status = 'offscreen (skip)';
+                } else if (line == 0) {
+                    status = 'recall the starting row';
+                } else if (line == 4) {
+                    status = 'rule application + store the first row for the next frame'
+                } else if (line%4 == 0) {
+                    status = 'apply CA rule';
+                }
+                $('#phase').innerText = `row ${line}: ${status}`;
+                const breakpoints = $('#breakpoints').checked;
+                if (breakpoints && (line == 0 || line == 1 || line == 4)) {
+                    $('#speed').value = 0;
+                    $('#breakpoints_div').classList.remove('flash-once');
+                    void $('#breakpoints_div').offsetWidth;
+                    $('#breakpoints_div').classList.add('flash-once');            
+                    needBreak = true;
+                }
+            }
+
+            function frame() {
+                glsl.adjustCanvas();
+
+                const speed = $('#speed').value;
+                const step_n = Math.pow(2, speed);
+                $('#speed_display').textContent = '2^'+speed;
+                if (step_n >= 1) {
+                    for (let i=0; i<step_n && !needBreak; ++i) {
+                        sim.step(updateStatus);
+                    }
+                } else {
+                    if (skip_n <= 0) {
+                        sim.step(updateStatus);
+                        skip_n = 1/step_n-1;
+                    } else {
+                        skip_n--;
+                    }   
+                }
+                needBreak = false;
+
+                const show = $('#show_select').value;
+                if (show =='circuit') {
+                    sim.draw_circuit(step_n);
+                } else if (show == 'screen') {
+                    sim.draw_screen(step_n);
+                } else if (show == 'circuit+screen') {
+                    sim.draw_circuit(step_n);
+                    sim.draw_screen(step_n, 0.6);
+                }
+            }
+
+            init();
+        </script> 
+
   # - block: form
 
   # - block: cta-image-paragraph
@@ -115,3 +243,4 @@ sections:
         css_style: ""
 
 ---
+
