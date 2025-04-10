@@ -47,6 +47,13 @@
   }
 
   .lg\:prose-xl {
-    font-size: x-large;
+    font-size: revert;
     max-width: revert;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .lg\:prose-xl {
+        font-size: xx-small;
+        max-width: 100%;
+      }
   }
