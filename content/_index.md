@@ -219,11 +219,12 @@ sections:
     id: join-us
     content:
       title: Ready to Apply?
-      text: "Applications for Spring 2025 are now open! We're looking for passionate students interested in hardware design, ASIC development, and digital systems. No prior experience required - just enthusiasm and willingness to learn! <br><br>
-      Please fill this form in as much detail as possible. We will be reviewing applications on a rolling basis, so apply early!"
+      text: "Applications for Spring 2025 are now open! We're looking for passionate students interested in hardware design, ASIC development, and digital systems. <br><br>
+      Please join the Discord and complete the onboarding!"
       button:
-        text: Get Started
-        url: https://docs.google.com/forms/d/e/1FAIpQLScdo5lc59Tld_-KVm1k5HrJB0xQABp9EcaFD-7KI-TWs5nuVg/viewform
+        text: Join Our Discord
+        url: https://discord.gg/rnfTvG9ckY
+        
     design:
       card:
         # Card background color (CSS class)
