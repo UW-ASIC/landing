@@ -41,7 +41,7 @@ header:
       enable: true
       text: "Join Us"
       url: "#join-us"
-    show_search: true
+    show_search: false
     show_theme_chooser: true
 
 # Site footer
