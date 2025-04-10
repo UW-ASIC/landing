@@ -16,14 +16,14 @@ sections:
         text: Join Us
         url: /#join-us
         icon: user-plus
-      secondary_action:
-        text: Sponsorships
-        url: /sponsors
-      announcement:
-        text: "Applications are open for the S25 Term!"
-        link:
-          text: "Read more about the team"
-          url: "/blog/"
+      # secondary_action:
+      #   text: Sponsorships
+      #   url: /sponsors
+      # announcement:
+      #   text: "Applications are open for the S25 Term!"
+      #   link:
+      #     text: "Read more about the team"
+      #     url: "/blog/"
     design:
       spacing:
         padding: [0, 0, 0, 0]
@@ -39,6 +39,13 @@ sections:
             brightness: 0.5
   - block: features
     id: features
+    design:
+      spacing:
+        padding: [0, 0, 0, 0]
+        margin: [0, 0, 0, 0]
+      # For full-screen, add `min-h-screen` below
+      background:
+        color: "bg-primary-700"
     content:
       title: Why Join Us?
       items:
@@ -52,14 +59,41 @@ sections:
           icon: user-group
           description: Connect with industry mentors, alumni, and peers passionate about hardware
   - block: markdown
+    class: "text-center"
+    design:
+      spacing:
+        padding: [0, 0, 0, 0]
+        margin: [0, 0, 0, 0]
     content:
+      title: Our Previous Projects
       text: | 
         <div id="demo">
           <canvas id="c"></canvas>
+            <div id="controls">
+              <div>
+                  Speed: <div id="speed_display">2^0</div>
+                  <input id="speed" type="range" min="-5" max="17" value="11">
+              </div>
+              <div>
+                  Show: 
+                  <select id="show_select">
+                      <option value="circuit+screen">circuit+screen</option>
+                      <option value="screen">screen</option>
+                      <option value="circuit">circuit</option>
+                  </select>
+              </div>
+              <div>
+                  Circuit: 
+                  <select id="circuit_select" style="width: 150px;">
+                      <option value="10_tt_um_uwasic_dinogame">Dino Game</option>
+                  </select>
+                  <span id="circuit_info"><a href="https://tinytapeout.com/runs/ttihp25a/tt_um_uwasic_dinogame">project info</a></span>
+              </div>        
+          </div>
         </div>
 
-        <script src="/swissgl.js"></script>
-        <script src="/sim.js"></script>
+        <script src="swissgl.js"></script>
+        <script src="sim.js"></script>
 
         <script>
             "use strict";
@@ -67,7 +101,7 @@ sections:
             const canvas = $('#c');
             const glsl = SwissGL(canvas);
 
-            const ca_project = '09_tt_um_znah_vga_ca';
+            const ca_project = '10_tt_um_uwasic_dinogame';
             let sim;
             let skip_n = 0;
             let needBreak = false;
@@ -102,11 +136,13 @@ sections:
                     status = 'apply CA rule';
                 }
             }
+
             function frame() {
                 glsl.adjustCanvas();
 
-                const speed = 0;
+                const speed = $('#speed').value;
                 const step_n = Math.pow(2, speed);
+                $('#speed_display').textContent = '2^'+speed;
                 if (step_n >= 1) {
                     for (let i=0; i<step_n && !needBreak; ++i) {
                         sim.step(updateStatus);
@@ -120,8 +156,18 @@ sections:
                     }   
                 }
                 needBreak = false;
-                sim.draw_circuit(step_n);
+
+                const show = $('#show_select').value;
+                if (show =='circuit') {
+                    sim.draw_circuit(step_n);
+                } else if (show == 'screen') {
+                    sim.draw_screen(step_n);
+                } else if (show == 'circuit+screen') {
+                    sim.draw_circuit(step_n);
+                    sim.draw_screen(step_n, 0.6);
+                }
             }
+
             init();
         </script> 
 

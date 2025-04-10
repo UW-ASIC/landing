@@ -1,10 +1,9 @@
 #demo {
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: -100;
-    width: 100%;
-		height: 100%;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70em;
+
 	}
 #c {width:100%; height: 100%}
 #controls {
@@ -45,4 +44,9 @@
     justify-content: center;
     display: flex;
     align-items: center;
+  }
+
+  .lg\:prose-xl {
+    font-size: x-large;
+    max-width: revert;
   }
