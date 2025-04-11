@@ -11,11 +11,11 @@ appearance:
 # SEO
 marketing:
   seo:
-    site_type: Person
+    site_type: EducationalOrganization
     local_business_type: ''
-    org_name: ''
-    description: 'A highly-customizable Hugo landing page theme powered by Hugo Blox website builder.'
-    twitter: 'GetResearchDev'
+    org_name: 'UWASIC'
+    description: 'UWASIC is a student design team at the University of Waterloo dedicated to exploring the world of ASIC and FPGA development.'
+    #    twitter: 'GetResearchDev'
   analytics:
     google_analytics: ''
     baidu_tongji: ''
