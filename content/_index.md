@@ -68,7 +68,7 @@ sections:
       title: Our Previous Projects
       text: | 
         <div id="demo">
-          <canvas id="c"></canvas>
+          <canvas id="c" width="1344" height="699"></canvas>
             <div id="controls">
               <div>
                   Speed: <div id="speed_display">2^0</div>
