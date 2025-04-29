@@ -218,8 +218,8 @@ sections:
   - block: cta-card
     id: join-us
     content:
-      title: Ready to Apply?
-      text: "Applications for Spring 2025 are now open! We're looking for passionate students interested in hardware design, ASIC development, and digital systems. <br><br>
+      title: Ready to Join?
+      text: "We're looking for passionate students interested in hardware design, ASIC development, and digital systems. <br><br>
       Please join the Discord and complete the onboarding!"
       button:
         text: Join Our Discord
